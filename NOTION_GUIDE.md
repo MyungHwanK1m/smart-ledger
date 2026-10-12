@@ -54,3 +54,12 @@
 * **Supabase URL:** `https://uyafrivmhhyzicbnkhet.supabase.co`
 * **Publishable Anon Key:** `sb_publishable_kAi4vM-5sUepIFbvX-UGXw_B7P8woef`
 * **7일 미사용 방지 자동화:** 매 3일마다 GitHub Actions(`.github/workflows/keep_alive.yml`)가 자동으로 핑을 보내 무료 티어 DB가 잠들지 않도록 영구 유지합니다.
+
+---
+
+## 🛠️ 5. 개발 언어 및 기술 스택 (Tech Stack & Versions)
+
+* **🎨 Frontend:** React `v19.0.0`, TypeScript `v5.7.3`, Vite `v6.1.0`, Tailwind CSS `v3.4.17`, Recharts `v2.15.1`, Lucide React `v0.475.0`, Pretendard `v1.3.9`
+* **☁️ Backend & DB:** Supabase Cloud (`@supabase/supabase-js v2.49.1`), PostgreSQL `v15+`, PL/pgSQL 중복 방지 & 자동 분류 트리거
+* **📦 Cross-Platform:** PWA (Service Worker `v2`), Electron `v44.7.0` (`SmartLedger.exe`), Capacitor `v8.5.3` (`SmartLedger.apk`), GitHub Pages (24/7 HTTPS)
+* **🤖 Automation:** MacroDroid (토스 결제 알림 무인 파싱 및 REST API 직송), GitHub Actions (매 3일 DB 잠듦 방지 Ping)

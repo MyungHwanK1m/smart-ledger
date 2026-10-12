@@ -1,8 +1,12 @@
 # 💰 스마트 원격 가계부 (Smart Ledger)
 
 ![GitHub Release](https://img.shields.io/github/v/release/MyungHwanK1m/smart-ledger?color=indigo)
-![GitHub Pages](https://img.shields.io/badge/PWA_Live-GitHub_Pages-success?logo=github)
+![React](https://img.shields.io/badge/React-19.0.0-61dafb?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-3178c6?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-6.1.0-646cff?logo=vite)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4.17-38bdf8?logo=tailwindcss)
 ![Supabase](https://img.shields.io/badge/Database-Supabase_Cloud-3ecf8e?logo=supabase)
+![GitHub Pages](https://img.shields.io/badge/PWA_Live-GitHub_Pages-success?logo=github)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 > **24시간 무중단 실시간 연동 스마트 가계부 시스템**  
@@ -78,6 +82,45 @@ flowchart TD
     DB -.->|실시간 이벤트 전송| RT -.->|즉시 차트 반영| EXE
     CRON -->|Keep-Alive| DB
 ```
+
+---
+
+## 🛠️ 개발 언어 및 기술 스택 (Tech Stack & Versions)
+
+이 프로젝트는 최신 모던 웹 표준 기술과 클라우드 서버리스 아키텍처를 결합하여 제작되었습니다:
+
+### 1. 프론트엔드 (Frontend)
+| 기술 / 라이브러리 | 버전 | 역할 및 특징 |
+| :--- | :--- | :--- |
+| **React** | `v19.0.0` | 최신 컴포넌트 기반 반응형 UI 및 선언적 상태 관리 |
+| **TypeScript** | `v5.7.3` | 정적 타입 검사 및 런타임 오류 방지, 강력한 코드 안정성 |
+| **Vite** | `v6.1.0` | Rollup 기반의 차세대 초고속 번들러 및 HMR 개발 환경 |
+| **Tailwind CSS** | `v3.4.17` | 유틸리티 퍼스트 반응형 스타일링 (PC & 모바일 노치/다이나믹 아일랜드 최적화) |
+| **Recharts** | `v2.15.1` | 카테고리별 도넛 차트 및 일별 소비 추이 반응형 통계 시각화 |
+| **Lucide React** | `v0.475.0` | 트리쉐이킹을 지원하는 경량 고품질 모던 벡터 아이콘 팩 |
+| **Pretendard** | `v1.3.9` | 모든 디바이스에서 또렷하게 렌더링되는 프리미엄 한글 웹폰트 |
+
+### 2. 백엔드 & 클라우드 데이터베이스 (Backend & Cloud DB)
+| 기술 / 서비스 | 버전 | 역할 및 특징 |
+| :--- | :--- | :--- |
+| **Supabase Cloud** | `@supabase/supabase-js v2.49.1` | 24/7 무중단 서버리스 REST API 및 실시간 WebSocket 동기화 엔진 |
+| **PostgreSQL** | `v15+` | 완전한 ACID 트랜잭션과 무결성을 보장하는 클라우드 관계형 DB |
+| **PL/pgSQL Trigger** | Native SQL | **3분 타임 윈도우 중복 결제 자동 제거** 및 상호명 기반 자동 카테고리 분류 |
+
+### 3. 크로스 플랫폼 & 배포 (Cross-Platform)
+| 플랫폼 / 도구 | 버전 | 역할 및 특징 |
+| :--- | :--- | :--- |
+| **Progressive Web App (PWA)** | Service Worker `v2` | 브라우저 보안 경고 0건, 원클릭 홈 화면 단독 앱 설치 및 자동 캐시 갱신 |
+| **Electron** | `v44.7.0` | Windows 64-bit 더블클릭 단일 포터블 실행 파일 (`SmartLedger.exe`) 패키징 |
+| **electron-builder** | `v26.15.3` | 전용 다중 해상도 아이콘(`.ico`) 각인 및 코드 무결성 빌드 |
+| **Capacitor Android** | `v8.5.3` | 안드로이드 14/15 호환 네이티브 앱 (`SmartLedger.apk`) 래퍼 |
+| **GitHub Pages** | 24/7 HTTPS | PWA 실시간 호스팅 및 GitHub Actions CI/CD 무중단 자동 배포 |
+
+### 4. 무인 스마트 자동화 (Smart Automation)
+| 도구 / 기능 | 환경 | 역할 및 특징 |
+| :--- | :--- | :--- |
+| **MacroDroid** | Android (무료) | 화면 꺼짐 상태에서도 **토스(Toss) 결제 알림** 감지 시 0.1초 Supabase REST API 직송 |
+| **GitHub Actions Cron** | v4 Workflows | 3일 주기 자동 Ping 전송으로 무료 티어 Supabase DB 영구 활성(잠듦 방지) 유지 |
 
 ---
 
