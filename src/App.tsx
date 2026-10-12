@@ -16,6 +16,7 @@ import { MobileRecentFeed } from './components/MobileRecentFeed';
 import { DesktopDashboard } from './components/DesktopDashboard';
 import { TransactionModal } from './components/TransactionModal';
 import { PinLockModal } from './components/PinLockModal';
+import { PwaInstallPrompt } from './components/PwaInstallPrompt';
 import { PlusCircle, ListOrdered, Loader2 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -144,6 +145,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+      {/* PWA 설치 유도 배너 */}
+      <PwaInstallPrompt />
+
+      {/* 헤더 */}
       <Header
         currentMonth={currentMonth}
         onChangeMonth={setCurrentMonth}
