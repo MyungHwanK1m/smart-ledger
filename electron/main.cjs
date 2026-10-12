@@ -10,6 +10,7 @@ function createWindow() {
     autoHideMenuBar: true,
     title: '스마트 가계부 - Smart Ledger',
     backgroundColor: '#f8fafc',
+    icon: path.join(__dirname, '../public/icon.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

@@ -8,6 +8,8 @@ dist/
 dist_electron/
 dist_apk/
 build/
+!build/icon.ico
+!build/icon.png
 *.tsbuildinfo
 
 # Android build cache

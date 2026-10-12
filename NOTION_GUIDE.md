@@ -40,7 +40,7 @@
 
 ## 🖥️ 3. 다른 PC에서 사용하는 방법 (회사, 노트북 등)
 
-1. [SmartLedger.exe 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/SmartLedger.exe) 링크 클릭
+1. [SmartLedger.exe 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.2/SmartLedger.exe) 링크 클릭
 2. 다운로드된 **`SmartLedger.exe`**를 바탕화면에 두고 **더블클릭** 실행
 
 ---
