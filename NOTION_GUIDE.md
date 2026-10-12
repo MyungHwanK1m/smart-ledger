@@ -1,31 +1,35 @@
-# 📘 스마트 원격 가계부 (Smart Ledger) - 다른 PC 및 모바일 사용 설명서
+# 📘 스마트 원격 가계부 (Smart Ledger) - 어디서나 사용 설명서
 
 > **한 줄 요약:**  
 > Supabase 클라우드 기반 24시간 실시간 연동 가계부입니다.  
-> 집 PC 서버를 켤 필요 없이, **다른 PC(회사, 노트북)** 및 **스마트폰(안드로이드)** 어디서나 다운로드하여 바로 사용할 수 있습니다.
+> 집 PC 서버를 켤 필요 없이, **스마트폰(PWA 앱)** 및 **다른 PC(회사, 노트북)** 어디서나 바로 사용할 수 있습니다.
 
 ---
 
-## 🔗 최신 v1.0.1 원클릭 다운로드 & 링크
+## 🔗 원클릭 바로가기 & 다운로드
 
-| 구분 | 다운로드 / 접속 링크 | 설명 |
+| 구분 | 링크 | 설명 |
 | :--- | :--- | :--- |
-| **📱 스마트폰 앱 파일 (v1.0.1)** | [smart-ledger.apk 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/smart-ledger.apk) | 상단 노치/카메라 겹침 해결 & 폰트 개선 최신 APK |
-| **🖥️ PC용 실행 프로그램 (v1.0.1)** | [SmartLedger.exe 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/SmartLedger.exe) | 설치 불필요, 더블클릭 즉시 실행 (포터블) |
-| **📦 GitHub 전체 릴리즈** | [GitHub Releases v1.0.1](https://github.com/MyungHwanK1m/smart-ledger/releases/tag/v1.0.1) | 최신 빌드 파일 배포 페이지 |
+| **📱 스마트폰 PWA 앱 접속** | [https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/) | **보안 경고 0건**, 브라우저 접속 후 [홈 화면에 추가] 누르면 즉시 앱 설치 |
+| **🖥️ PC용 실행 프로그램** | [SmartLedger.exe 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/SmartLedger.exe) | 설치 불필요, 더블클릭 즉시 실행 (윈도우 포터블) |
+| **📦 GitHub 통합 릴리즈** | [GitHub Releases v1.0.1](https://github.com/MyungHwanK1m/smart-ledger/releases/tag/v1.0.1) | 최신 빌드 파일 배포 페이지 |
 | **💻 GitHub 소스코드** | [MyungHwanK1m/smart-ledger](https://github.com/MyungHwanK1m/smart-ledger) | 전체 소스코드 저장소 |
 | **☁️ Supabase 클라우드** | [Supabase 콘솔 바로가기](https://supabase.com/dashboard/project/uyafrivmhhyzicbnkhet) | 24시간 가계부 데이터베이스 |
 
 ---
 
-## 📱 1. 스마트폰(안드로이드)에서 사용하는 방법
+## 📱 1. 스마트폰에서 앱으로 설치하고 쓰는 방법 (PWA ⭐)
 
-1. 스마트폰 브라우저로 [smart-ledger.apk 다운로드 링크](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/smart-ledger.apk)를 터치하여 다운로드합니다.
-2. 다운로드가 완료되면 파일을 터치하여 **업데이트 / 설치**합니다. (출처를 알 수 없는 앱 설치 허용)
-3. **v1.0.1 개선 사항:**
-   * 스마트폰 상단 카메라 펀치홀 및 시간/배터리 아이콘 아래로 앱 헤더가 깔끔하게 분리되어 시인성이 대폭 향상되었습니다.
-   * 고품질 한글 웹폰트(Pretendard)가 적용되어 글자가 깨지거나 뭉개지지 않고 선명하게 표시됩니다.
-4. 스마트폰에서 입력한 지출은 집/회사 PC의 `SmartLedger.exe`에 **실시간으로 즉시 반영**됩니다.
+> 💡 **보안 경고가 전혀 없는 정식 HTTPS 웹 앱(PWA) 방식입니다.**
+
+1. 스마트폰(갤럭시/아이폰) 브라우저로 아래 주소에 접속합니다:  
+   👉 **[https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/)**
+2. 화면 상단의 **[앱 설치]** 버튼을 누르거나, 브라우저 메뉴(점 3개 `⋮` 또는 공유 버튼 `↑`)에서 **[홈 화면에 추가]** 또는 **[앱 설치]**를 터치합니다.
+3. 스마트폰 바탕화면에 **"스마트가계부"** 전용 앱 아이콘이 바로 생성됩니다.
+4. **사용 특징:**
+   * 브라우저 주소창이나 테두리 없이 **네이티브 앱과 100% 동일한 전체화면**으로 구동됩니다.
+   * 카메라 펀치홀, 시간, 배터리 아이콘 아래로 완벽히 분리되어 깔끔하게 보입니다.
+   * 향후 기능이 업데이트되어도 재설치할 필요 없이 **자동으로 실시간 최신 버전으로 갱신**됩니다.
 
 ---
 
@@ -37,17 +41,12 @@
 2. 다운로드된 **`SmartLedger.exe`**를 바탕화면에 두고 **더블클릭**합니다.
 3. 내 Supabase 가계부 데이터와 실시간 연결되어 종합 대시보드가 열립니다.
 
-### 방법 ② 개발 환경에서 직접 실행하고 싶을 때
-```bash
-git clone https://github.com/MyungHwanK1m/smart-ledger.git
-cd smart-ledger
-npm install
-npm run dev
-```
+### 방법 ② 다른 PC에서도 브라우저로 보고 싶을 때
+* 크롬/웨일/엣지 브라우저에서 [https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/) 접속!
 
 ---
 
-## 🔑 3. 클라우드 DB 접속 정보 (백업/보관용)
+## 🔑 3. 클라우드 DB 접속 정보 (보관용)
 
 * **Supabase URL:** `https://uyafrivmhhyzicbnkhet.supabase.co`
 * **Publishable Anon Key:** `sb_publishable_kAi4vM-5sUepIFbvX-UGXw_B7P8woef`
