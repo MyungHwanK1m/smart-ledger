@@ -14,8 +14,9 @@
 
 | 구분 | 링크 | 설명 |
 | :--- | :--- | :--- |
-| **📱 스마트폰 PWA 앱 접속** | **[https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/)** | **보안 경고 0건**, 브라우저 접속 후 [홈 화면에 추가] 시 전체화면 앱으로 설치 |
-| **🖥️ PC용 실행 프로그램** | **[SmartLedger.exe 다운로드 (v1.0.2)](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.2/SmartLedger.exe)** | 설치 불필요, 다운로드 후 더블클릭 즉시 실행 (Windows 64-bit, 신규 전용 아이콘 적용) |
+| **📱 스마트폰 PWA 웹앱 접속** | **[https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/)** | **보안 경고 0건 (추천 ⭐)**, 브라우저 접속 후 [홈 화면에 추가] 시 앱 설치 |
+| **🤖 안드로이드 설치 APK** | **[SmartLedger.apk 다운로드 (v1.0.2)](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.2/SmartLedger.apk)** | 신규 지갑 아이콘 적용 네이티브 APK 설치 파일 (5.9MB) |
+| **🖥️ PC용 실행 프로그램** | **[SmartLedger.exe 다운로드 (v1.0.2)](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.2/SmartLedger.exe)** | 설치 불필요, 다운로드 후 더블클릭 즉시 실행 (Windows 64-bit, 신규 전용 아이콘) |
 | **🤖 무인 자동화 가이드** | **[MacroDroid 설정 가이드](./MACRODROID_GUIDE.md)** | 토스/카드 알림 수신 시 폰 안 켜도 자동 등록 (3분 중복 제거 포함) |
 | **📦 GitHub 통합 릴리즈** | **[GitHub Releases](https://github.com/MyungHwanK1m/smart-ledger/releases)** | 최신 릴리즈 및 파일 배포 내역 |
 | **☁️ Supabase 콘솔** | **[Supabase Project Console](https://supabase.com/dashboard/project/uyafrivmhhyzicbnkhet)** | 가계부 클라우드 데이터베이스 콘솔 |

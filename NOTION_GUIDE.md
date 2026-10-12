@@ -30,11 +30,15 @@
 
 ---
 
-## 📱 2. 스마트폰 PWA 앱으로 수동 등록 (현금, 계좌이체 등)
+## 📱 2. 스마트폰 앱으로 수동 등록 (현금, 계좌이체 등)
 
+### 방법 ① PWA 웹앱 (추천 ⭐ / 보안 경고 0건)
 1. 스마트폰 브라우저로 [https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/) 접속
 2. 상단 **[앱 설치]** 버튼 (또는 브라우저 메뉴에서 [홈 화면에 추가]) 터치
 3. 바탕화면에 설치된 **스마트가계부** 아이콘을 눌러 전체화면 네이티브 앱처럼 3초 만에 간편 기록
+
+### 방법 ② 안드로이드 APK 파일 설치
+* [SmartLedger.apk 다운로드 (v1.0.2)](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.2/SmartLedger.apk) 클릭 후 설치 (신규 지갑 아이콘 각인 완료)
 
 ---
 
