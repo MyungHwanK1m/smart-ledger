@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smart-ledger-cache-v1';
+const CACHE_NAME = 'smart-ledger-cache-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -7,7 +7,7 @@ self.addEventListener('install', (event) => {
         './',
         './index.html',
         './manifest.json',
-        './icon.svg',
+        './icon.png',
         './pwa-192x192.png',
         './pwa-512x512.png',
       ]);

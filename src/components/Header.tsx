@@ -46,9 +46,11 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
         {/* 1. 좌측 로고 & 타이틀 */}
         <div className="flex items-center gap-2 shrink-0">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-xs shrink-0">
-            <ReceiptText className="w-4 h-4 sm:w-5 sm:h-5" />
-          </div>
+          <img
+            src="./icon.png"
+            alt="스마트가계부"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shadow-xs shrink-0 object-cover border border-slate-100"
+          />
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <h1 className="font-black text-slate-800 text-sm sm:text-base tracking-tight leading-none whitespace-nowrap">
