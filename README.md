@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 > **24시간 무중단 실시간 연동 스마트 가계부 시스템**  
-> 집 PC 서버를 켤 필요 없이, **스마트폰(PWA 모바일 앱)**과 **PC(윈도우 포터블 실행 파일)** 어디서나 실시간으로 동기화되어 사용할 수 있는 개인 가계부입니다.
+> 집 PC 서버를 켤 필요 없이, **스마트폰 무인 자동 등록**, **PWA 모바일 앱**, **PC 윈도우 포터블 실행 파일** 어디서나 실시간으로 동기화되어 사용할 수 있는 개인 가계부입니다.
 
 ---
 
@@ -16,6 +16,7 @@
 | :--- | :--- | :--- |
 | **📱 스마트폰 PWA 앱 접속** | **[https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/)** | **보안 경고 0건**, 브라우저 접속 후 [홈 화면에 추가] 시 전체화면 앱으로 설치 |
 | **🖥️ PC용 실행 프로그램** | **[SmartLedger.exe 다운로드 (v1.0.1)](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/SmartLedger.exe)** | 설치 불필요, 다운로드 후 더블클릭 즉시 실행 (Windows 64-bit) |
+| **🤖 무인 자동화 가이드** | **[MacroDroid 설정 가이드](./MACRODROID_GUIDE.md)** | 토스/카드 알림 수신 시 폰 안 켜도 자동 등록 (3분 중복 제거 포함) |
 | **📦 GitHub 통합 릴리즈** | **[GitHub Releases](https://github.com/MyungHwanK1m/smart-ledger/releases)** | 최신 릴리즈 및 파일 배포 내역 |
 | **☁️ Supabase 콘솔** | **[Supabase Project Console](https://supabase.com/dashboard/project/uyafrivmhhyzicbnkhet)** | 가계부 클라우드 데이터베이스 콘솔 |
 
@@ -23,7 +24,11 @@
 
 ## ✨ 핵심 기능
 
-* **📱 모바일 3초 간편 입력 (PWA):**
+* **🤖 무인 자동 결제 등록 (MacroDroid):**
+  * 결제 알림(토스, 카카오페이, 카드 승인 문자) 도착 시 **폰을 켜지 않아도 0.1초 만에 DB 자동 적재**
+  * **3분 타임 윈도우 중복 방지:** 토스 알림과 카드사 문자가 동시 도착해도 1건만 깔끔히 저장
+  * **상호명 기반 자동 카테고리 매핑:** 스타벅스/메가커피→카페, 배민/식당→식비, CU/GS25→편의점/마트 자동 분류
+* **📱 모바일 3초 간편 수동 입력 (PWA):**
   * 계산기형 전용 숫자 키패드 및 `+1만`, `+5만`, `+10만` 퀵 버튼
   * 토스, 카카오페이, 신용카드, 체크카드, 계좌이체, 현금 원터치 결제수단 선택
   * 일별/최근 내역 타임라인 피드
@@ -46,11 +51,15 @@
 ```mermaid
 flowchart TD
     subgraph Cloud["☁️ Supabase Cloud (24/7 Serverless DB)"]
-        DB[("PostgreSQL DB\n• transactions\n• categories\n• budgets")]
+        DB[("PostgreSQL DB\n• 3분 중복 방지 트리거\n• 상호명 자동 카테고리 분류")]
         RT["Realtime Engine (WebSocket)"]
     end
 
-    subgraph Mobile["📱 스마트폰 (PWA Standalone App)"]
+    subgraph Auto["🤖 스마트폰 무인 자동화 (MacroDroid)"]
+        MD["알림 수신 감지\n(토스/카카오/카드문자)\n• 금액 및 상호명 추출"]
+    end
+
+    subgraph Mobile["📱 스마트폰 수동 입력 (PWA Standalone App)"]
         PWA["모바일 웹 앱\n• 계산기형 간편 입력\n• 최근 지출 타임라인\n• 무경고 원클릭 홈 화면 설치"]
     end
 
@@ -62,25 +71,12 @@ flowchart TD
         CRON["GitHub Actions Cron\n(매 3일 자동 Ping 전송)"]
     end
 
+    MD -->|HTTP POST| DB
     PWA -->|REST API| DB
     EXE -->|REST API| DB
     DB -.->|실시간 이벤트 전송| RT -.->|즉시 차트 반영| EXE
     CRON -->|Keep-Alive| DB
 ```
-
----
-
-## 📱 기기별 사용 가이드
-
-### 1. 스마트폰(안드로이드 / 아이폰)에서 사용하기 (PWA)
-1. 스마트폰 브라우저로 [https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/) 접속
-2. 상단에 나타나는 파란색 **[앱 설치]** 버튼 터치  
-   *(또는 브라우저 메뉴 `⋮` / 공유 버튼 `↑` 에서 **[홈 화면에 추가]** 또는 **[앱 설치]** 선택)*
-3. 스마트폰 홈 화면에 생성된 **스마트가계부** 아이콘을 눌러 전체화면 앱으로 실행!
-
-### 2. PC(집, 회사, 노트북)에서 사용하기
-1. [SmartLedger.exe 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/SmartLedger.exe)
-2. 다운로드된 **`SmartLedger.exe`** 파일을 더블클릭하여 바로 실행 (설치 과정 없음)
 
 ---
 
@@ -106,6 +102,7 @@ npm run build:exe
 
 ---
 
-## 🗄️ 데이터베이스 초기 스키마 (Supabase SQL)
+## 🗄️ 데이터베이스 스키마 및 트리거 (Supabase SQL)
 
-새로운 Supabase 프로젝트를 구성할 때 [Supabase SQL Editor](https://supabase.com/dashboard/project/_/sql/new)에서 루트 디렉터리의 [`schema.sql`](./schema.sql)을 실행하면 테이블 및 기본 15종 카테고리 데이터가 자동으로 주입됩니다.
+1. **기본 스키마:** [`schema.sql`](./schema.sql) - 테이블 및 기본 15종 카테고리 생성
+2. **자동화 스키마:** [`schema_automation.sql`](./schema_automation.sql) - 3분 중복 방지 및 상호명 자동 카테고리 분류 트리거
