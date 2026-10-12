@@ -19,7 +19,6 @@ import { PinLockModal } from './components/PinLockModal';
 import { PlusCircle, ListOrdered, Loader2 } from 'lucide-react';
 
 export const App: React.FC = () => {
-  // 기본 ?�월 ?�정 (?�재 ?�점: 2026??10??
   const [currentMonth, setCurrentMonth] = useState<string>(() => {
     const now = new Date();
     const year = now.getFullYear();
@@ -33,13 +32,11 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isRealtimeConnected, setIsRealtimeConnected] = useState<boolean>(false);
 
-  // �?모드 �?모바????(?�면 ?�기 기반 ?�동 감�?)
   const [viewMode, setViewMode] = useState<'mobile' | 'desktop'>(() => {
     return window.innerWidth < 1024 ? 'mobile' : 'desktop';
   });
   const [mobileTab, setMobileTab] = useState<'input' | 'feed'>('input');
 
-  // PIN 보안 ?�금 ?�태
   const [savedPin, setSavedPin] = useState<string | null>(() => {
     return localStorage.getItem('smart_ledger_pin');
   });
@@ -47,14 +44,11 @@ export const App: React.FC = () => {
     return !!localStorage.getItem('smart_ledger_pin');
   });
 
-  // 거래 ?�정 모달 ?�태
   const [isTxModalOpen, setIsTxModalOpen] = useState(false);
   const [editingTx, setEditingTx] = useState<Transaction | null>(null);
 
-  // ?�면 리사?�즈 감�?
   useEffect(() => {
     const handleResize = () => {
-      // ?�용?��? ?�동?�로 바꾸지 ?��? 경우???�해 ?�동 반영
       if (window.innerWidth >= 1024 && viewMode === 'mobile') {
         setViewMode('desktop');
       }
@@ -63,20 +57,18 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [viewMode]);
 
-  // 카테고리 불러?�기
   useEffect(() => {
     async function initCategories() {
       try {
         const catList = await getCategories();
         setCategories(catList);
       } catch (err) {
-        console.error('카테고리 로드 ?�러:', err);
+        console.error('카테고리 로드 에러:', err);
       }
     }
     initCategories();
   }, []);
 
-  // 거래 ?�역 �??�산 불러?�기
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
@@ -87,7 +79,7 @@ export const App: React.FC = () => {
       setTransactions(txList);
       setBudget(budgetAmount);
     } catch (err) {
-      console.error('?�이??조회 ?�류:', err);
+      console.error('데이터 조회 오류:', err);
     } finally {
       setLoading(false);
     }
@@ -97,16 +89,13 @@ export const App: React.FC = () => {
     loadData();
   }, [loadData]);
 
-  // Supabase Realtime ?�시�??�기??구독
   useEffect(() => {
     const channel = supabase
       .channel('public:transactions')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'transactions' },
-        payload => {
-          console.log('?�시�?변�?감�?:', payload);
-          // 변�?감�? ??즉시 목록 리프?�시
+        () => {
           getTransactionsByMonth(currentMonth).then(setTransactions);
         }
       )
@@ -119,7 +108,6 @@ export const App: React.FC = () => {
     };
   }, [currentMonth]);
 
-  // ?�들??모음
   const handleCreateTx = async (txData: {
     type: TransactionType;
     amount: number;
@@ -155,8 +143,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* 1. ?�단 글로벌 ?�더 */}
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <Header
         currentMonth={currentMonth}
         onChangeMonth={setCurrentMonth}
@@ -166,16 +153,14 @@ export const App: React.FC = () => {
         isRealtimeConnected={isRealtimeConnected}
       />
 
-      {/* 2. 메인 컨텐�??�역 */}
-      <main className="flex-1 py-4 sm:py-6">
+      <main className="flex-1 py-3 sm:py-6">
         {loading ? (
           <div className="flex flex-col items-center justify-center min-h-[50vh] text-slate-400">
             <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mb-2" />
-            <p className="text-sm font-semibold">?�이?��? ?�기?�하??�?..</p>
+            <p className="text-sm font-semibold">데이터를 동기화하는 중...</p>
           </div>
         ) : viewMode === 'mobile' ? (
-          /* ================= 모바??�?================= */
-          <div className="px-4 pb-20">
+          <div className="px-3 pb-24 max-w-md mx-auto">
             {mobileTab === 'input' ? (
               <MobileQuickInput
                 categories={categories}
@@ -192,34 +177,33 @@ export const App: React.FC = () => {
               />
             )}
 
-            {/* 모바???�단 ?�비게이??�?*/}
-            <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-100 py-2 px-6 flex justify-around items-center shadow-lg">
+            {/* 모바일 하단 내비게이션 바 (Safe Area 대응) */}
+            <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-100 pt-2 px-6 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] flex justify-around items-center shadow-lg">
               <button
                 onClick={() => setMobileTab('input')}
-                className={`flex flex-col items-center gap-1 transition ${
+                className={`flex flex-col items-center gap-1 transition active:scale-95 ${
                   mobileTab === 'input'
                     ? 'text-indigo-600 font-bold'
                     : 'text-slate-400 font-medium hover:text-slate-600'
                 }`}
               >
-                <PlusCircle className="w-6 h-6" />
-                <span className="text-[11px]">기록?�기</span>
+                <PlusCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="text-[11px]">기록하기</span>
               </button>
               <button
                 onClick={() => setMobileTab('feed')}
-                className={`flex flex-col items-center gap-1 transition ${
+                className={`flex flex-col items-center gap-1 transition active:scale-95 ${
                   mobileTab === 'feed'
                     ? 'text-indigo-600 font-bold'
                     : 'text-slate-400 font-medium hover:text-slate-600'
                 }`}
               >
-                <ListOrdered className="w-6 h-6" />
-                <span className="text-[11px]">?�역 조회</span>
+                <ListOrdered className="w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="text-[11px]">내역 조회</span>
               </button>
             </nav>
           </div>
         ) : (
-          /* ================= PC ?�스?�탑 �?================= */
           <DesktopDashboard
             transactions={transactions}
             categories={categories}
@@ -239,7 +223,6 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* 거래 ?�역 추�? / ?�정 모달 */}
       <TransactionModal
         isOpen={isTxModalOpen}
         onClose={() => {
@@ -257,7 +240,6 @@ export const App: React.FC = () => {
         categories={categories}
       />
 
-      {/* 보안 PIN ?�금 모달 */}
       <PinLockModal
         isOpen={isLocked}
         onSuccess={() => setIsLocked(false)}
