@@ -503,7 +503,10 @@ export const DesktopDashboard: React.FC<DesktopDashboardProps> = ({
                 filteredTransactions.map(t => (
                   <tr key={t.id} className="hover:bg-slate-50/60 transition">
                     <td className="py-3 px-4 text-slate-600 font-mono">
-                      {t.transacted_at.slice(0, 10)}
+                      <div className="font-semibold text-slate-700">{t.transacted_at.slice(0, 10)}</div>
+                      <div className="text-[10px] text-slate-400 font-medium">
+                        {new Date(t.transacted_at).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </div>
                     </td>
                     <td className="py-3 px-4">
                       <span

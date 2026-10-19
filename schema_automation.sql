@@ -10,23 +10,42 @@ declare
   v_category_id uuid;
 begin
   -- -------------------------------------------------------------
-  -- [1단계] 3분 타임 윈도우 중복 방지 (Deduplication)
-  -- 최근 3분 이내에 동일 금액(amount)과 동일/유사 상호명(memo)이 이미 존재하면 INSERT 취소
+  -- [1단계] 정밀 중복 방지 (Deduplication)
+  -- 1) 상호명(memo)이 있는 경우 (토스/카드 알림 자동화):
+  --    최근 3분 이내 동일 금액 & 동일/유사 상호명이 이미 존재하면 중복 취소
+  -- 2) 상호명(memo)이 없는 경우 (일반 수동 간편 입력):
+  --    실수 연타(더블 클릭) 방지를 위해 10초 이내에 동일 건이 들어온 경우에만 취소
   -- -------------------------------------------------------------
-  if exists (
-    select 1 from public.transactions
-    where amount = NEW.amount
-      and type = NEW.type
-      and (
-        memo = NEW.memo
-        or NEW.memo like '%' || memo || '%'
-        or memo like '%' || NEW.memo || '%'
-      )
-      and transacted_at >= (NEW.transacted_at - interval '3 minutes')
-      and transacted_at <= (NEW.transacted_at + interval '3 minutes')
-  ) then
-    -- 중복 결제 알림이므로 무시 (Drop)
-    return null;
+  if NEW.memo is not null and trim(NEW.memo) <> '' then
+    -- 상호명이 있는 알림 결제: 3분 타임 윈도우 중복 제거
+    if exists (
+      select 1 from public.transactions
+      where amount = NEW.amount
+        and type = NEW.type
+        and memo is not null
+        and trim(memo) <> ''
+        and (
+          memo = NEW.memo
+          or NEW.memo like '%' || memo || '%'
+          or memo like '%' || NEW.memo || '%'
+        )
+        and transacted_at >= (NEW.transacted_at - interval '3 minutes')
+        and transacted_at <= (NEW.transacted_at + interval '3 minutes')
+    ) then
+      return null; -- 중복 결제 알림 드롭
+    end if;
+  else
+    -- 상호명이 없는 수동 입력: 더블클릭 연타만 방지 (10초 타임 윈도우)
+    if exists (
+      select 1 from public.transactions
+      where amount = NEW.amount
+        and type = NEW.type
+        and (memo is null or trim(memo) = '')
+        and transacted_at >= (NEW.transacted_at - interval '10 seconds')
+        and transacted_at <= (NEW.transacted_at + interval '10 seconds')
+    ) then
+      return null; -- 연타 더블클릭 드롭
+    end if;
   end if;
 
   -- -------------------------------------------------------------

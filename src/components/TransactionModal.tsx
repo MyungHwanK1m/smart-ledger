@@ -66,6 +66,17 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
 
     try {
       setIsSubmitting(true);
+
+      const now = new Date();
+      let transactedDate: Date;
+      const todayStr = now.toISOString().slice(0, 10);
+      if (date === todayStr) {
+        transactedDate = now;
+      } else {
+        const [y, m, d] = date.split('-').map(Number);
+        transactedDate = new Date(y, m - 1, d, now.getHours(), now.getMinutes(), now.getSeconds());
+      }
+
       await onSave({
         ...(transaction ? { id: transaction.id } : {}),
         type,
@@ -74,7 +85,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
         category_id: categoryId || undefined,
         payment_method: paymentMethod,
         memo: memo.trim(),
-        transacted_at: new Date(date + 'T12:00:00Z').toISOString(),
+        transacted_at: transactedDate.toISOString(),
       });
       onClose();
     } catch (err) {

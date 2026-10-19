@@ -76,6 +76,18 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
 
     try {
       setIsSubmitting(true);
+
+      // 실제 결제 시각(시/분/초) 반영
+      const now = new Date();
+      let transactedDate: Date;
+      const todayStr = now.toISOString().slice(0, 10);
+      if (date === todayStr) {
+        transactedDate = now;
+      } else {
+        const [y, m, d] = date.split('-').map(Number);
+        transactedDate = new Date(y, m - 1, d, now.getHours(), now.getMinutes(), now.getSeconds());
+      }
+
       await onSubmit({
         type,
         amount,
@@ -83,7 +95,7 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
         category_id: selectedCategory.id,
         payment_method: paymentMethod,
         memo: memo.trim(),
-        transacted_at: new Date(date + 'T12:00:00Z').toISOString(),
+        transacted_at: transactedDate.toISOString(),
       });
 
       // 성공 피드백 및 입력값 리셋
