@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lock, KeyRound, Delete } from 'lucide-react';
 
 interface PinLockModalProps {
@@ -18,6 +18,16 @@ export const PinLockModal: React.FC<PinLockModalProps> = ({
   const [confirmPin, setConfirmPin] = useState('');
   const [step, setStep] = useState<'enter' | 'set' | 'confirm'>(savedPin ? 'enter' : 'set');
   const [errorMsg, setErrorMsg] = useState('');
+
+  // 열릴 때마다 상태 초기화: PIN 설정 직후 'confirm' 단계가 남아 있으면
+  // 다음 잠금 때 틀린 번호로 새 PIN을 재설정해 잠금을 우회할 수 있었음
+  useEffect(() => {
+    if (!isOpen) return;
+    setStep(savedPin ? 'enter' : 'set');
+    setPin('');
+    setConfirmPin('');
+    setErrorMsg('');
+  }, [isOpen, savedPin]);
 
   if (!isOpen) return null;
 
