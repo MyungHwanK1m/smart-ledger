@@ -31,7 +31,7 @@ interface DesktopDashboardProps {
   transactions: Transaction[];
   categories: Category[];
   budget: number;
-  onSetBudget: (amount: number) => void;
+  onSetBudget: (amount: number) => Promise<void>;
   onAddTransaction: () => void;
   onEditTransaction: (tx: Transaction) => void;
   onDeleteTransaction: (id: string) => void;
@@ -142,7 +142,7 @@ export const DesktopDashboard: React.FC<DesktopDashboardProps> = ({
 
   // CSV 엑셀 다운로드
   const handleExportCSV = () => {
-    if (transactions.length === 0) {
+    if (filteredTransactions.length === 0) {
       alert('내보낼 데이터가 없습니다.');
       return;
     }
@@ -167,12 +167,18 @@ export const DesktopDashboard: React.FC<DesktopDashboardProps> = ({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    // 클릭 직후 바로 해제하면 일부 브라우저(Safari)에서 다운로드가 실패하므로 약간 뒤에 해제
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
-  const handleSaveBudget = () => {
+  const handleSaveBudget = async () => {
     const val = parseInt(budgetInput, 10) || 0;
-    onSetBudget(val);
-    setIsEditingBudget(false);
+    try {
+      await onSetBudget(val);
+      setIsEditingBudget(false);
+    } catch {
+      alert('예산 저장 중 오류가 발생했습니다.');
+    }
   };
 
   return (

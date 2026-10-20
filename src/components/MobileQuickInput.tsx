@@ -106,7 +106,7 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
   const formattedAmount = (parseInt(amountStr, 10) || 0).toLocaleString();
 
   return (
-    <div className="flex flex-col h-full max-w-md mx-auto bg-white shadow-sm rounded-3xl overflow-hidden border border-slate-100">
+    <div className="relative flex flex-col h-full max-w-md mx-auto bg-white shadow-sm rounded-3xl overflow-hidden border border-slate-100">
       {/* 1. 상단 수입/지출 토글 */}
       <div className="p-4 pb-2 bg-slate-50/70">
         <div className="flex bg-slate-200/70 p-1 rounded-2xl">
@@ -294,7 +294,7 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
       {showSuccessToast && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-xl text-xs font-semibold animate-in fade-in slide-in-from-top-4 duration-200">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-          <span>지출 내역이 안전하게 등록되었습니다!</span>
+          <span>{type === 'expense' ? '지출' : '수입'} 내역이 안전하게 등록되었습니다!</span>
         </div>
       )}
     </div>
