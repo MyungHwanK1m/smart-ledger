@@ -10,11 +10,11 @@
 
 | 구분 | 링크 | 설명 |
 | :--- | :--- | :--- |
-| **📱 스마트폰 PWA 앱 접속** | [https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/) | **보안 경고 0건**, 브라우저 접속 후 [홈 화면에 추가] 누르면 즉시 앱 설치 |
-| **🖥️ PC용 실행 프로그램** | [SmartLedger.exe 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.1/SmartLedger.exe) | 설치 불필요, 더블클릭 즉시 실행 (윈도우 포터블) |
+| **📱 스마트폰 PWA 앱 접속** | [https://aud9855.github.io/smart-ledger/](https://aud9855.github.io/smart-ledger/) | **보안 경고 0건**, 브라우저 접속 후 [홈 화면에 추가] 누르면 즉시 앱 설치 |
+| **🖥️ PC용 실행 프로그램** | [SmartLedger.exe 다운로드](https://github.com/aud9855/smart-ledger/releases/download/v1.0.1/SmartLedger.exe) | 설치 불필요, 더블클릭 즉시 실행 (윈도우 포터블) |
 | **🤖 무인 자동화 가이드** | [MacroDroid 설정 가이드](./MACRODROID_GUIDE.md) | 결제 알림 올 때 폰 안 켜도 자동 등록 (중복 제거 포함) |
-| **📦 GitHub 통합 릴리즈** | [GitHub Releases v1.0.1](https://github.com/MyungHwanK1m/smart-ledger/releases/tag/v1.0.1) | 최신 빌드 파일 배포 페이지 |
-| **💻 GitHub 소스코드** | [MyungHwanK1m/smart-ledger](https://github.com/MyungHwanK1m/smart-ledger) | 전체 소스코드 저장소 |
+| **📦 GitHub 통합 릴리즈** | [GitHub Releases v1.0.1](https://github.com/aud9855/smart-ledger/releases/tag/v1.0.1) | 최신 빌드 파일 배포 페이지 |
+| **💻 GitHub 소스코드** | [aud9855/smart-ledger](https://github.com/aud9855/smart-ledger) | 전체 소스코드 저장소 |
 | **☁️ Supabase 클라우드** | [Supabase 콘솔 바로가기](https://supabase.com/dashboard/project/uyafrivmhhyzicbnkhet) | 24시간 가계부 데이터베이스 |
 
 ---
@@ -33,18 +33,18 @@
 ## 📱 2. 스마트폰 앱으로 수동 등록 (현금, 계좌이체 등)
 
 ### 방법 ① PWA 웹앱 (추천 ⭐ / 보안 경고 0건)
-1. 스마트폰 브라우저로 [https://myunghwank1m.github.io/smart-ledger/](https://myunghwank1m.github.io/smart-ledger/) 접속
+1. 스마트폰 브라우저로 [https://aud9855.github.io/smart-ledger/](https://aud9855.github.io/smart-ledger/) 접속
 2. 상단 **[앱 설치]** 버튼 (또는 브라우저 메뉴에서 [홈 화면에 추가]) 터치
 3. 바탕화면에 설치된 **스마트가계부** 아이콘을 눌러 전체화면 네이티브 앱처럼 3초 만에 간편 기록
 
 ### 방법 ② 안드로이드 APK 파일 설치
-* [SmartLedger.apk 다운로드 (v1.0.2)](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.2/SmartLedger.apk) 클릭 후 설치 (신규 지갑 아이콘 각인 완료)
+* [SmartLedger.apk 다운로드 (v1.0.2)](https://github.com/aud9855/smart-ledger/releases/download/v1.0.2/SmartLedger.apk) 클릭 후 설치 (신규 지갑 아이콘 각인 완료)
 
 ---
 
 ## 🖥️ 3. 다른 PC에서 사용하는 방법 (회사, 노트북 등)
 
-1. [SmartLedger.exe 다운로드](https://github.com/MyungHwanK1m/smart-ledger/releases/download/v1.0.2/SmartLedger.exe) 링크 클릭
+1. [SmartLedger.exe 다운로드](https://github.com/aud9855/smart-ledger/releases/download/v1.0.2/SmartLedger.exe) 링크 클릭
 2. 다운로드된 **`SmartLedger.exe`**를 바탕화면에 두고 **더블클릭** 실행
 
 ---
