@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Transaction, Category, TransactionType, PaymentMethod } from './types';
 import {
   supabase,
@@ -70,25 +70,36 @@ export const App: React.FC = () => {
     initCategories();
   }, []);
 
-  const loadData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const [txList, budgetAmount] = await Promise.all([
-        getTransactionsByMonth(currentMonth),
-        getBudgetByMonth(currentMonth),
-      ]);
-      setTransactions(txList);
-      setBudget(budgetAmount);
-    } catch (err) {
-      console.error('데이터 조회 오류:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentMonth]);
+  // 가장 최근 조회 요청 번호: 월을 빠르게 넘길 때 늦게 도착한 이전 달 응답이 덮어쓰지 않도록 함
+  const latestRequestRef = useRef(0);
+
+  // showSpinner=false면 화면을 유지한 채 조용히 갱신 (입력 폼/필터 상태가 초기화되지 않도록)
+  const fetchMonthData = useCallback(
+    async (showSpinner: boolean) => {
+      const requestId = ++latestRequestRef.current;
+      if (showSpinner) setLoading(true);
+      try {
+        const [txList, budgetAmount] = await Promise.all([
+          getTransactionsByMonth(currentMonth),
+          getBudgetByMonth(currentMonth),
+        ]);
+        if (requestId !== latestRequestRef.current) return;
+        setTransactions(txList);
+        setBudget(budgetAmount);
+      } catch (err) {
+        console.error('데이터 조회 오류:', err);
+      } finally {
+        if (requestId === latestRequestRef.current) setLoading(false);
+      }
+    },
+    [currentMonth]
+  );
+
+  const refreshData = useCallback(() => fetchMonthData(false), [fetchMonthData]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    fetchMonthData(true);
+  }, [fetchMonthData]);
 
   useEffect(() => {
     const channel = supabase
@@ -97,7 +108,7 @@ export const App: React.FC = () => {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'transactions' },
         () => {
-          getTransactionsByMonth(currentMonth).then(setTransactions);
+          refreshData();
         }
       )
       .subscribe(status => {
@@ -107,7 +118,7 @@ export const App: React.FC = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [currentMonth]);
+  }, [refreshData]);
 
   const handleCreateTx = async (txData: {
     type: TransactionType;
@@ -119,18 +130,23 @@ export const App: React.FC = () => {
     transacted_at: string;
   }) => {
     await createTransaction(txData);
-    await loadData();
+    await refreshData();
   };
 
   const handleUpdateTx = async (txData: Partial<Transaction>) => {
     if (!txData.id) return;
     await updateTransaction(txData.id, txData);
-    await loadData();
+    await refreshData();
   };
 
   const handleDeleteTx = async (id: string) => {
-    await deleteTransaction(id);
-    await loadData();
+    try {
+      await deleteTransaction(id);
+    } catch {
+      alert('삭제 중 오류가 발생했습니다.');
+      return;
+    }
+    await refreshData();
   };
 
   const handleSetBudget = async (amount: number) => {
