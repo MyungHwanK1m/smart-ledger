@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Transaction, Category } from '../types';
 import { CategoryIcon } from './CategoryIcon';
+import { toLocalDateKey } from '../lib/date';
 import {
   TrendingDown,
   TrendingUp,
@@ -110,7 +111,7 @@ export const DesktopDashboard: React.FC<DesktopDashboardProps> = ({
     }
 
     transactions.forEach(t => {
-      const dayNum = parseInt(t.transacted_at.slice(8, 10), 10);
+      const dayNum = new Date(t.transacted_at).getDate();
       if (dataMap[dayNum]) {
         if (t.type === 'expense') {
           dataMap[dayNum].expense += t.amount;
@@ -148,7 +149,7 @@ export const DesktopDashboard: React.FC<DesktopDashboardProps> = ({
 
     const headers = ['일시', '유형', '카테고리', '결제수단', '금액', '메모'];
     const rows = filteredTransactions.map(t => [
-      t.transacted_at.slice(0, 10),
+      toLocalDateKey(t.transacted_at),
       t.type === 'expense' ? '지출' : '수입',
       t.category_name,
       t.payment_method,
@@ -503,7 +504,7 @@ export const DesktopDashboard: React.FC<DesktopDashboardProps> = ({
                 filteredTransactions.map(t => (
                   <tr key={t.id} className="hover:bg-slate-50/60 transition">
                     <td className="py-3 px-4 text-slate-600 font-mono">
-                      <div className="font-semibold text-slate-700">{t.transacted_at.slice(0, 10)}</div>
+                      <div className="font-semibold text-slate-700">{toLocalDateKey(t.transacted_at)}</div>
                       <div className="text-[10px] text-slate-400 font-medium">
                         {new Date(t.transacted_at).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })}
                       </div>

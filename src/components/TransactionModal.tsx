@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Transaction, Category, TransactionType, PaymentMethod } from '../types';
 import { X } from 'lucide-react';
+import { buildTransactedAt, toLocalDateKey } from '../lib/date';
+import { DuplicateTransactionError } from '../lib/supabase';
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -36,7 +38,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
       setCategoryId(transaction.category_id || '');
       setPaymentMethod(transaction.payment_method);
       setMemo(transaction.memo || '');
-      setDate(transaction.transacted_at.slice(0, 10));
+      setDate(toLocalDateKey(transaction.transacted_at));
     } else {
       setType('expense');
       setAmount(0);
@@ -45,7 +47,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
       setCategoryId(defaultCat?.id || '');
       setPaymentMethod('토스');
       setMemo('');
-      setDate(new Date().toISOString().slice(0, 10));
+      setDate(toLocalDateKey());
     }
   }, [transaction, categories, isOpen]);
 
@@ -67,14 +69,14 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     try {
       setIsSubmitting(true);
 
-      const now = new Date();
-      let transactedDate: Date;
-      const todayStr = now.toISOString().slice(0, 10);
-      if (date === todayStr) {
-        transactedDate = now;
+      // 신규: 실제 시각 반영 / 수정: 날짜가 그대로면 원래 시각 유지, 바뀌면 원래 시:분:초를 새 날짜에 적용
+      let transactedAt: string;
+      if (!transaction) {
+        transactedAt = buildTransactedAt(date);
+      } else if (date === toLocalDateKey(transaction.transacted_at)) {
+        transactedAt = transaction.transacted_at;
       } else {
-        const [y, m, d] = date.split('-').map(Number);
-        transactedDate = new Date(y, m - 1, d, now.getHours(), now.getMinutes(), now.getSeconds());
+        transactedAt = buildTransactedAt(date, new Date(transaction.transacted_at));
       }
 
       await onSave({
@@ -85,12 +87,12 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
         category_id: categoryId || undefined,
         payment_method: paymentMethod,
         memo: memo.trim(),
-        transacted_at: transactedDate.toISOString(),
+        transacted_at: transactedAt,
       });
       onClose();
     } catch (err) {
       console.error(err);
-      alert('저장 중 오류가 발생했습니다.');
+      alert(err instanceof DuplicateTransactionError ? err.message : '저장 중 오류가 발생했습니다.');
     } finally {
       setIsSubmitting(false);
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Transaction } from '../types';
 import { CategoryIcon } from './CategoryIcon';
+import { parseLocalDateKey, toLocalDateKey } from '../lib/date';
 import { Trash2, Edit2, TrendingDown, TrendingUp, Calendar, PiggyBank } from 'lucide-react';
 
 interface MobileRecentFeedProps {
@@ -15,7 +16,7 @@ export const MobileRecentFeed: React.FC<MobileRecentFeedProps> = ({
   onEdit,
 }) => {
   const grouped = transactions.reduce<Record<string, Transaction[]>>((acc, tx) => {
-    const dateKey = tx.transacted_at.slice(0, 10);
+    const dateKey = toLocalDateKey(tx.transacted_at);
     if (!acc[dateKey]) acc[dateKey] = [];
     acc[dateKey].push(tx);
     return acc;
@@ -34,8 +35,8 @@ export const MobileRecentFeed: React.FC<MobileRecentFeedProps> = ({
   const netBalance = totalIncome - totalExpense;
 
   const formatDateLabel = (dateStr: string) => {
-    const todayStr = new Date().toISOString().slice(0, 10);
-    const d = new Date(dateStr);
+    const todayStr = toLocalDateKey();
+    const d = parseLocalDateKey(dateStr);
     const month = d.getMonth() + 1;
     const day = d.getDate();
     const dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'][d.getDay()];

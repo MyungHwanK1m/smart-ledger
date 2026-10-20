@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { Transaction, Category, Budget } from '../types';
+import { getLocalMonthRange } from './date';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
@@ -15,13 +16,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // ==========================================
 
 export async function getTransactionsByMonth(yearMonth: string): Promise<Transaction[]> {
-  // yearMonth format: 'YYYY-MM'
-  const startDate = `${yearMonth}-01T00:00:00.000Z`;
-  
-  // 익월 1일 계산
-  const [year, month] = yearMonth.split('-').map(Number);
-  const nextMonthDate = new Date(Date.UTC(year, month, 1));
-  const endDate = nextMonthDate.toISOString();
+  // yearMonth format: 'YYYY-MM' (로컬 시간대 기준 월 범위)
+  const { start: startDate, end: endDate } = getLocalMonthRange(yearMonth);
 
   const { data, error } = await supabase
     .from('transactions')
@@ -37,16 +33,28 @@ export async function getTransactionsByMonth(yearMonth: string): Promise<Transac
   return data || [];
 }
 
+/** DB 트리거(process_transaction_automation)가 중복으로 판정해 INSERT를 취소한 경우 */
+export class DuplicateTransactionError extends Error {
+  constructor() {
+    super('중복 거래로 판단되어 저장되지 않았습니다.');
+    this.name = 'DuplicateTransactionError';
+  }
+}
+
 export async function createTransaction(transaction: Omit<Transaction, 'id' | 'created_at'>): Promise<Transaction> {
   const { data, error } = await supabase
     .from('transactions')
     .insert([transaction])
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error('거래 내역 생성 실패:', error);
     throw error;
+  }
+  if (!data) {
+    // BEFORE INSERT 트리거가 null을 반환하면 0건이 저장됨
+    throw new DuplicateTransactionError();
   }
   return data;
 }

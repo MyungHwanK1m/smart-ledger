@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TransactionType, PaymentMethod, Category } from '../types';
 import { CategoryIcon } from './CategoryIcon';
+import { buildTransactedAt, toLocalDateKey } from '../lib/date';
+import { DuplicateTransactionError } from '../lib/supabase';
 import { Delete, Calendar, FileText, CheckCircle2 } from 'lucide-react';
 
 interface MobileQuickInputProps {
@@ -24,7 +26,7 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('토스');
   const [memo, setMemo] = useState<string>('');
-  const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState<string>(() => toLocalDateKey());
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [showSuccessToast, setShowSuccessToast] = useState<boolean>(false);
 
@@ -77,17 +79,6 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
     try {
       setIsSubmitting(true);
 
-      // 실제 결제 시각(시/분/초) 반영
-      const now = new Date();
-      let transactedDate: Date;
-      const todayStr = now.toISOString().slice(0, 10);
-      if (date === todayStr) {
-        transactedDate = now;
-      } else {
-        const [y, m, d] = date.split('-').map(Number);
-        transactedDate = new Date(y, m - 1, d, now.getHours(), now.getMinutes(), now.getSeconds());
-      }
-
       await onSubmit({
         type,
         amount,
@@ -95,7 +86,8 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
         category_id: selectedCategory.id,
         payment_method: paymentMethod,
         memo: memo.trim(),
-        transacted_at: transactedDate.toISOString(),
+        // 실제 결제 시각(시/분/초) 반영
+        transacted_at: buildTransactedAt(date),
       });
 
       // 성공 피드백 및 입력값 리셋
@@ -105,7 +97,7 @@ export const MobileQuickInput: React.FC<MobileQuickInputProps> = ({ categories, 
       setTimeout(() => setShowSuccessToast(false), 2000);
     } catch (err) {
       console.error(err);
-      alert('등록 중 오류가 발생했습니다.');
+      alert(err instanceof DuplicateTransactionError ? err.message : '등록 중 오류가 발생했습니다.');
     } finally {
       setIsSubmitting(false);
     }
