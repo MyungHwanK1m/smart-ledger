@@ -73,7 +73,11 @@ begin
 end $$;
 
 -- 7. 기본 카테고리 초기 데이터 (Seed Data)
-insert into public.categories (name, type, icon, color, order_num) values
+-- name에 unique 제약이 없어 on conflict로는 중복을 막을 수 없으므로,
+-- 같은 이름/유형이 없을 때만 넣는다 (스크립트를 여러 번 실행해도 안전)
+insert into public.categories (name, type, icon, color, order_num)
+select v.name, v.type, v.icon, v.color, v.order_num
+from (values
   -- 지출 카테고리
   ('식비', 'expense', 'UtensilsCrossed', '#ef4444', 1),
   ('카페/간식', 'expense', 'Coffee', '#f97316', 2),
@@ -91,4 +95,8 @@ insert into public.categories (name, type, icon, color, order_num) values
   ('용돈', 'income', 'Coins', '#f59e0b', 3),
   ('금융수익', 'income', 'PiggyBank', '#8b5cf6', 4),
   ('기타수입', 'income', 'MoreHorizontal', '#6b7280', 5)
-on conflict do nothing;
+) as v(name, type, icon, color, order_num)
+where not exists (
+  select 1 from public.categories c
+  where c.name = v.name and c.type = v.type
+);

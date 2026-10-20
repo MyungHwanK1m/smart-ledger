@@ -26,8 +26,9 @@ begin
         and trim(memo) <> ''
         and (
           memo = NEW.memo
-          or NEW.memo like '%' || memo || '%'
-          or memo like '%' || NEW.memo || '%'
+          -- like 대신 strpos 사용: 상호명에 %나 _가 있어도 와일드카드로 해석되지 않음
+          or strpos(NEW.memo, memo) > 0
+          or strpos(memo, NEW.memo) > 0
         )
         and transacted_at >= (NEW.transacted_at - interval '3 minutes')
         and transacted_at <= (NEW.transacted_at + interval '3 minutes')
@@ -58,7 +59,7 @@ begin
       NEW.category_name := '식비';
     elsif NEW.memo ~* '(cu|gs25|세븐일레븐|이마트24|미니스톱|마트|편의점|홈플러스|이마트|다이소|코스트코|노브랜드|하나로마트|슈퍼|마켓)' then
       NEW.category_name := '편의점/마트';
-    elsif NEW.memo ~* '(교통|지하철|버스|택시|카카오t|카카오택시|티머니|코레일|srf|철도|주유|gs칼텍스|sk에너지|s-oil|오일|하이패스|주차|쏘카|그린카)' then
+    elsif NEW.memo ~* '(교통|지하철|버스|택시|카카오t|카카오택시|티머니|코레일|ktx|srt|철도|주유|gs칼텍스|sk에너지|s-oil|오일|하이패스|주차|쏘카|그린카)' then
       NEW.category_name := '교통/차량';
     elsif NEW.memo ~* '(올리브영|쿠팡|네이버페이|무신사|지그재그|에이블리|백화점|쇼핑|유니클로|자라|스파오|패션|아울렛)' then
       NEW.category_name := '쇼핑/의류';
