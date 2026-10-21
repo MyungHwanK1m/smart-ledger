@@ -6,7 +6,9 @@ import {
   Monitor,
   Lock,
   ReceiptText,
+  Download,
 } from 'lucide-react';
+import { usePwaInstall, shouldOfferInstall, requestInstall } from '../lib/pwa';
 
 interface HeaderProps {
   currentMonth: string; // 'YYYY-MM'
@@ -25,6 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
   onLock,
   isRealtimeConnected,
 }) => {
+  const pwa = usePwaInstall();
   const [year, month] = currentMonth.split('-').map(Number);
 
   const handlePrevMonth = () => {
@@ -111,6 +114,18 @@ export const Header: React.FC<HeaderProps> = ({
               </>
             )}
           </button>
+
+          {/* 앱 설치 버튼 (홈 화면 앱/APK/EXE로 실행 중이면 숨김) */}
+          {shouldOfferInstall(pwa) && (
+            <button
+              onClick={() => requestInstall()}
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition shadow-xs flex items-center gap-1.5 active:scale-95"
+              title="앱 설치"
+            >
+              <Download className="w-4 h-4" />
+              <span className="hidden md:inline">앱 설치</span>
+            </button>
+          )}
 
           {/* PIN 잠금 버튼 */}
           <button
